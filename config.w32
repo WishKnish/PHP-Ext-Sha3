@@ -1,0 +1,11 @@
+ARG_ENABLE("sha3", "Enable SHA3 support", "no");
+
+if (PHP_SHA3 != "no") {
+
+    var sha3_sources = 	'php_sha3.c KeccakHash.c KeccakSponge.c KeccakF-1600-reference.c SnP-FBWL-default.c displayIntermediateValues.c';
+
+    PHP_INSTALL_HEADERS("ext/sha3", "php_sha3.h KeccakHash.h KeccakSponge.h KeccakF-1600-interface.h SnP-FBWL-default.h displayIntermediateValues.h");
+
+    EXTENSION("sha3", sha3_sources);
+
+}

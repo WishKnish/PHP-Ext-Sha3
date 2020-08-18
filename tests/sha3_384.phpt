@@ -1,0 +1,14 @@
+--TEST--
+Verify sha3 384 bit output
+--SKIPIF--
+<?php if (!extension_loaded("sha3")) print "skip"; ?>
+--FILE--
+<?php
+require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'test_helper.php';
+testSHA3(384);
+?>
+--EXPECT--
+0c63a75b845e4f7d01107d852e4c2485c51a50aaaa94fc61995e71bbee983a2ac3713831264adb47fb6bd1e058d5f004
+ec01498288516fc926459f58e2c6ad8df9b473cb0fc08c2596da7cf0e49be4b298d88cea927ac7f539f1edf228376d25
+7063465e08a93bce31cd89d2e3ca8f602498696e253592ed26f07bf7e703cf328581e1471a7ba7ab119b1a9ebdf8be41
+d5b972302f5080d0830e0de7b6b2cf383665a008f4c4f386a61112652c742d20cb45aa51bd4f542fc733e2719e999291
