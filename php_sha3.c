@@ -51,42 +51,30 @@ ZEND_GET_MODULE(sha3)
 PHP_FUNCTION(shake256)
 {
 #if ZEND_MODULE_API_NO >= 20151012
-    zend_long hashBitLength = 512;
-    zend_long hashByteLength;
+    zend_long hashByteLength = 64;
+    zend_long hashBitLength;
     size_t dataByteLength;
 #else
-    long hashBitLength = 512;
-    long hashByteLength;
+    long hashByteLength = 64;
+    long hashBitLength;
     int dataByteLength;
 #endif
     char *data;
     zend_bool rawOutput = 0;
 
-    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|lb", &data, &dataByteLength, &hashBitLength, &rawOutput) == FAILURE) {
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|lb", &data, &dataByteLength, &hashByteLength, &rawOutput) == FAILURE) {
         return;
     }
 
-    unsigned int capacity = hashBitLength * 2;
-    unsigned int rate = SnP_width - capacity;
+    // Calculare bit length
+    hashBitLength = hashByteLength * 8;
 
-    hashByteLength = hashBitLength / 8;
-
-    unsigned char suffix = 0x06;
-
-    // --- !!! @todo overriding vars !!!
-    rate = 1088;
-    capacity = 512;
-    suffix = 0x1f;
-    // ---
-
-
+    // Result hash val
     BitSequence* hashVal = malloc(hashByteLength*sizeof(BitSequence));
-    // BitSequence hashVal[hashByteLength];
 
+    // Create a hash instance
     Keccak_HashInstance hashInstance;
-
-    // HashReturn ret = Keccak_HashInitialize_SHAKE256(&hashInstance);
-    HashReturn ret = Keccak_HashInitialize(&hashInstance, rate, capacity, hashBitLength, suffix);
+    HashReturn ret = Keccak_HashInitialize_SHAKE256(&hashInstance, hashBitLength);
 
     if (ret != SHA3_SUCCESS) {
         zend_error(E_WARNING, "Unsupported sha3() output length");

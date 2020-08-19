@@ -48,11 +48,11 @@ HashReturn Keccak_HashInitialize(Keccak_HashInstance *hashInstance, unsigned int
 
 /** Macro to initialize a SHAKE128 instance as specified in the FIPS 202 draft.
   */
-#define Keccak_HashInitialize_SHAKE128(hashInstance)        Keccak_HashInitialize(hashInstance, 1344,  256,   0, 0x1F)
+#define Keccak_HashInitialize_SHAKE128(hashInstance, hashBitLength)        Keccak_HashInitialize(hashInstance, 1344, 256, hashBitLength, 0x1F)
 
 /** Macro to initialize a SHAKE256 instance as specified in the FIPS 202 draft.
   */
-#define Keccak_HashInitialize_SHAKE256(hashInstance)        Keccak_HashInitialize(hashInstance, 1088,  512,   0, 0x1F)
+#define Keccak_HashInitialize_SHAKE256(hashInstance, hashBitLength)        Keccak_HashInitialize(hashInstance, 1088, 512, hashBitLength, 0x1F)
 
 /** Macro to initialize a SHA3-224 instance as specified in the FIPS 202 draft.
   */
