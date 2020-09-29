@@ -59,12 +59,18 @@ PHP_FUNCTION(shake256)
     long hashBitLength;
     int dataByteLength;
 #endif
-    char *data;
+    ALIGN unsigned char *data;
     zend_bool rawOutput = 0;
 
     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|lb", &data, &dataByteLength, &hashByteLength, &rawOutput) == FAILURE) {
         return;
     }
+
+
+    // Copy string to inner data (do not modify arg pointer)
+    // ALIGN unsigned char *data_inner = malloc(dataByteLength);
+    // memcpy (data_inner, data, dataByteLength);
+
 
     // Calculare bit length
     hashBitLength = hashByteLength * 8;
@@ -82,7 +88,7 @@ PHP_FUNCTION(shake256)
     }
 
 
-    Keccak_HashUpdate(&hashInstance, (unsigned char *) data, dataByteLength * 8);
+    Keccak_HashUpdate(&hashInstance, data, dataByteLength * 8);
     Keccak_HashFinal(&hashInstance, hashVal);
 
     if (rawOutput) {
@@ -123,9 +129,7 @@ PHP_FUNCTION(keccakF1600Permute)
     KeccakF1600_Initialize();
 
     // Copy string to result (do not modify arg pointer)
-    for (int i = 0; i < SnP_stateSizeInBytes; i++) {
-        result[i] = data[i];
-    }
+    memcpy (result, data, SnP_stateSizeInBytes);
 
     KeccakF1600_StatePermute(result);
 
