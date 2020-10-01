@@ -126,7 +126,7 @@ PHP_FUNCTION(keccakF1600Permute)
         return;
     }
 
-    KeccakF1600_Initialize();
+    // KeccakF1600_Initialize();
 
     // Copy string to result (do not modify arg pointer)
     memcpy (result, data, SnP_stateSizeInBytes);

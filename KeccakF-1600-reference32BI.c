@@ -25,9 +25,40 @@ typedef unsigned int UINT32;
 //typedef unsigned long       UINT32;
 
 #define nrRounds 24
-UINT32 KeccakRoundConstants[nrRounds][2];
+UINT32 _KeccakRoundConstants[nrRounds][2];
 #define nrLanes 25
-unsigned int KeccakRhoOffsets[nrLanes];
+unsigned int _KeccakRhoOffsets[nrLanes];
+static unsigned int KeccakF1600_Initialized = 0;
+
+unsigned int KeccakRhoOffsets[nrLanes] = {
+    0, 1, 62, 28, 27, 36, 44, 6, 55, 20, 3, 10, 43, 25, 39, 41, 45, 15, 21, 8, 18, 2, 61, 56, 14
+};
+UINT32 KeccakRoundConstants[nrRounds][2] = {
+    {0x00000000, 0x00000001},
+    {0x00000000, 0x00008082},
+    {0x80000000, 0x0000808a},
+    {0x80000000, 0x80008000},
+    {0x00000000, 0x0000808b},
+    {0x00000000, 0x80000001},
+    {0x80000000, 0x80008081},
+    {0x80000000, 0x00008009},
+    {0x00000000, 0x0000008a},
+    {0x00000000, 0x00000088},
+    {0x00000000, 0x80008009},
+    {0x00000000, 0x8000000a},
+    {0x00000000, 0x8000808b},
+    {0x80000000, 0x0000008b},
+    {0x80000000, 0x00008089},
+    {0x80000000, 0x00008003},
+    {0x80000000, 0x00008002},
+    {0x80000000, 0x00000080},
+    {0x00000000, 0x0000800a},
+    {0x80000000, 0x8000000a},
+    {0x80000000, 0x80008081},
+    {0x80000000, 0x00008080},
+    {0x00000000, 0x80000001},
+    {0x80000000, 0x80008008}
+};
 
 /* ---------------------------------------------------------------- */
 
@@ -80,9 +111,13 @@ int LFSR86540(UINT8 *LFSR);
 
 void KeccakF1600_Initialize()
 {
-    KeccakF1600_InitializeRoundConstants();
-    KeccakF1600_InitializeRhoOffsets();
+    if ( KeccakF1600_Initialized == 0 ) {
+    //    KeccakF1600_InitializeRoundConstants();
+    //    KeccakF1600_InitializeRhoOffsets();
+        KeccakF1600_Initialized = 1;
+    }
 }
+
 
 void KeccakF1600_InitializeRoundConstants()
 {
